@@ -9,9 +9,14 @@ public class Shoot : MonoBehaviour {
     private float range = 300;
     private Transform myTransform;
 
+    public Door doorScript;
+    private bool open;
+
 	// Use this for initialization
 	void Start () {
         myTransform = transform;
+        doorScript = GameObject.Find("EastDoor").GetComponent<Door>();
+        open = false;
 	}
 	
 	// Update is called once per frame
@@ -27,8 +32,17 @@ public class Shoot : MonoBehaviour {
 
             if(Physics.Raycast(myTransform.position, myTransform.forward, out hit, range))
             {
-                if(hit.transform.CompareTag("Enemy"))
-                    Debug.Log("Enemy " + hit.transform.name);
+                if (hit.transform.CompareTag("Enemy"))
+                {
+                    if (open)
+                    {
+                        doorScript.Close();
+                    } else
+                    {
+                        doorScript.Open();
+                    }
+                    open = !open;
+                }
             }
         }
     }

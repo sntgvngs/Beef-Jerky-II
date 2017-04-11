@@ -9,12 +9,6 @@ public class Welcome : MonoBehaviour {
         StartCoroutine(WelcomeMessage());
 	}
 
-    ////Update is called once per frame
-    //void Update()
-    //{
-
-    //}
-
     IEnumerator WelcomeMessage ()
     {
         yield return new WaitForSeconds(4.5f);

@@ -4,13 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - AlarmLight
   - Enemy
-  - MainLight
-  - Fader
-  - WayPoint
-  - Siren
-  - Alarm
+  - Lock
   layers:
   - Default
   - TransparentFX
@@ -20,9 +15,9 @@ TagManager:
   - UI
   - 
   - 
-  - PlayArea
-  - Extents
   - Weapon
+  - Item
+  - Not Solid
   - 
   - 
   - 
