@@ -24,7 +24,7 @@ public class MapGenerator : MonoBehaviour {
         Instantiate(floor, new Vector3(loc.x * scalefactor, 0, loc.z * scalefactor), Quaternion.identity, transform);
         for(int i = 0; i < neighbors.Length; i++)
         {
-            if(!createdRooms.Contains(loc + neighbors[i]))
+            if(!HasCreated(loc + neighbors[i]))
             {
                 if (Random.value > 0.5f)
                 {
@@ -44,11 +44,16 @@ public class MapGenerator : MonoBehaviour {
             }
         }
         createdRooms.Add(loc);
+        
     }
 
     public bool HasCreated(Vector3 loc)
     {
-        return createdRooms.Contains(loc);
+        bool contains = false;
+        foreach (Vector3 room in createdRooms)
+            if (Vector3.Distance(room, loc) < 0.5)
+                contains = true;
+        return contains;
     }
 
     //    enum Objective {Spawn, Key, BigKey, Boss}

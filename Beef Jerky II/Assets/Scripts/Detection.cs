@@ -39,14 +39,15 @@ public class Detection : MonoBehaviour {
     Vector3 CurrentRoom()
     {
         Vector3 estimate = myTransform.position / generator.scalefactor;
-        return new Vector3((int) estimate.x, (int) estimate.y, (int) estimate.z);
+        Debug.Log("Estimated current: " + estimate);
+        return new Vector3(Mathf.Round(estimate.x), 0, Mathf.Round(estimate.z));
     }
 
     Vector3 NextRoom(Vector3 door)
     {
         Vector3 current = CurrentRoom();
-        Vector3 delta = new Vector3((int) (door.x / generator.scalefactor * 2), 0, (int) (door.y / generator.scalefactor * 2));
-        Debug.Log(delta);
+        Vector3 delta = (door - current * generator.scalefactor)/generator.scalefactor;
+        delta = new Vector3(2 * delta.x, 0, 2 * delta.z);
         //for (int i = 1; i < generator.neighbors.Length; i++)
         //{
         //    if (Vector3.Distance(current, current + generator.neighbors[i]) < Vector3.Distance(current, closest))
