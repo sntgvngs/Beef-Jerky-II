@@ -7,6 +7,7 @@ public class Detection : MonoBehaviour {
     public LayerMask detectionLayer;
     private float range = 5;
     private Transform myTransform;
+    public Health hp;
 
     public MapGenerator generator;
 	// Use this for initialization
@@ -27,7 +28,6 @@ public class Detection : MonoBehaviour {
             if (Physics.Raycast(myTransform.position, myTransform.forward, out hit, range, detectionLayer))
             {
                 Vector3 next = NextRoom(hit.transform.position);
-                Debug.Log("There's a neighbor: " + generator.HasCreated(next));
                 if (!generator.HasCreated(next))
                     generator.CreateRoom(next, generator.currentLevel);
                 hit.transform.gameObject.GetComponent<Door>().Toggle();
@@ -47,10 +47,8 @@ public class Detection : MonoBehaviour {
     Vector3 NextRoom(Vector3 door)
     {
         Vector3 current = CurrentRoom();
-        Debug.Log("Current room is " + current);
         Vector3 delta = (door - current * generator.scalefactor)/generator.scalefactor;
         delta = new Vector3(2 * delta.x, 0, 2 * delta.z);
-        Debug.Log("Calc delta is " + delta);
         return current + delta;
     }
 }

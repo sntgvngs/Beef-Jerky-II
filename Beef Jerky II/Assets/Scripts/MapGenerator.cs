@@ -45,11 +45,9 @@ public class MapGenerator : MonoBehaviour {
         {
             selector = 2f;
         }
-        Debug.Log("Selector is " + selector);
         if(selector < exitChance && !exitCreated)
         {
             // Create exit floor
-            Debug.Log("Making an exit");
             Instantiate(exit, new Vector3(loc.x * scalefactor, -level * vscalefactor, loc.z * scalefactor), Quaternion.identity, transform);
             exitCreated = true;
             CheckNextLevel();

@@ -112,6 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0, z: 0}
   intention: {x: 0, y: 0, z: 0}
+  mama: {fileID: 0}
   avoid: {x: 0, y: 0, z: 0}
 --- !u!135 &135132046647074584
 SphereCollider:

@@ -7,6 +7,8 @@ public class Floid : MonoBehaviour
     public Vector3 direction;
     public Vector3 intention;
 
+    public FloidSpawner mama;
+
     static float speed = 3;
     static float jumpSpeed = 10;
 
@@ -29,6 +31,17 @@ public class Floid : MonoBehaviour
 
         direction = Random.insideUnitSphere * 4;
         avoid = Vector3.zero;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Detection playerDetector = collision.gameObject.GetComponent<Detection>();
+        if (playerDetector != null)
+        {
+            // We hit the player!
+            playerDetector.hp.Damage(1);
+            mama.DestroyFloid(gameObject);
+        }
     }
 
     // Update is called once per frame
@@ -61,7 +74,9 @@ public class Floid : MonoBehaviour
         {
             intention = (playerBody.position - transform.position);
             if (intention.magnitude < 20)
+            {
                 intention.Normalize();
+            }
             else
                 intention = Vector3.zero;
             intention *= speed;

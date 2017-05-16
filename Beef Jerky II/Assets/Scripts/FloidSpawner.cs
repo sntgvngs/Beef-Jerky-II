@@ -17,6 +17,10 @@ public class FloidSpawner : MonoBehaviour {
             Vector2 vic = Random.insideUnitCircle * 10;
             floids.Add(Instantiate(floid, transform.position + new Vector3(vic.x, 2, vic.y), Quaternion.identity));
         }
+        foreach(GameObject g in floids)
+        {
+            g.GetComponent<Floid>().mama = this;
+        }
 	}
 	
 	// Update is called once per frame
@@ -43,4 +47,10 @@ public class FloidSpawner : MonoBehaviour {
 
         }
 	}
+
+    public void DestroyFloid(GameObject victim)
+    {
+        floids.Remove(victim);
+        Destroy(victim);
+    }
 }
