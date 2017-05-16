@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Enemy
   - Lock
+  - M0
+  - M1
+  - M2
   layers:
   - Default
   - TransparentFX

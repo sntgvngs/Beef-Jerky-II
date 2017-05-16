@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d794a9f260d68904b9ec0d4cf72e418c
-timeCreated: 1491963430
+timeCreated: 1494941783
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
@@ -8,6 +8,11 @@ MonoImporter:
   - wall: {fileID: 1957115151661288, guid: 99831c1001ab3404896c83615a8bb668, type: 2}
   - door: {fileID: 1347928628034806, guid: d3fe95008ad9acb4d8b4e93b8fb46096, type: 2}
   - floor: {fileID: 1436372748503430, guid: 625371c0426c6cf4db7ffcfc3268c67d, type: 2}
+  - exit: {fileID: 1442034792342344, guid: 55ed7c8c5d26dc74db0c2c96fb3877df, type: 2}
+  - enemyFloor: {fileID: 1332072588531694, guid: 165b76d93603b8e41b9b3a9fbc667c20,
+      type: 2}
+  - healingFloor: {fileID: 1486636556052894, guid: ac36b17e7f3c66d40b2e3ec1f1af0aa8,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

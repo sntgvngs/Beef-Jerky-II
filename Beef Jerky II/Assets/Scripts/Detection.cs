@@ -26,33 +26,31 @@ public class Detection : MonoBehaviour {
         if (Input.GetButtonUp("Submit")) {
             if (Physics.Raycast(myTransform.position, myTransform.forward, out hit, range, detectionLayer))
             {
-                Debug.Log("Current room: " + CurrentRoom());
                 Vector3 next = NextRoom(hit.transform.position);
-                Debug.Log("Next room: " + next);
+                Debug.Log("There's a neighbor: " + generator.HasCreated(next));
                 if (!generator.HasCreated(next))
-                    generator.CreateRoom(next);
+                    generator.CreateRoom(next, generator.currentLevel);
                 hit.transform.gameObject.GetComponent<Door>().Toggle();
             }
         }
     }
 
-    Vector3 CurrentRoom()
+    public Vector3 CurrentRoom()
     {
-        Vector3 estimate = myTransform.position / generator.scalefactor;
-        Debug.Log("Estimated current: " + estimate);
-        return new Vector3(Mathf.Round(estimate.x), 0, Mathf.Round(estimate.z));
+        Vector3 estimate = myTransform.position;
+        estimate.x /= generator.scalefactor;
+        estimate.y /= generator.vscalefactor;
+        estimate.z /= generator.scalefactor;
+        return new Vector3(Mathf.Round(estimate.x), Mathf.Round(estimate.y), Mathf.Round(estimate.z));
     }
 
     Vector3 NextRoom(Vector3 door)
     {
         Vector3 current = CurrentRoom();
+        Debug.Log("Current room is " + current);
         Vector3 delta = (door - current * generator.scalefactor)/generator.scalefactor;
         delta = new Vector3(2 * delta.x, 0, 2 * delta.z);
-        //for (int i = 1; i < generator.neighbors.Length; i++)
-        //{
-        //    if (Vector3.Distance(current, current + generator.neighbors[i]) < Vector3.Distance(current, closest))
-        //        closest = current + generator.neighbors[i];
-        //}
+        Debug.Log("Calc delta is " + delta);
         return current + delta;
     }
 }
