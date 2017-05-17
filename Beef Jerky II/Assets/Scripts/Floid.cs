@@ -8,6 +8,9 @@ public class Floid : MonoBehaviour
     public Vector3 intention;
 
     public FloidSpawner mama;
+    private AudioSource aSource;
+
+    public GameObject explosion;
 
     static float speed = 3;
     static float jumpSpeed = 10;
@@ -24,7 +27,7 @@ public class Floid : MonoBehaviour
     {
         if (playerBody == null)
             playerBody = GameObject.Find("FPSController").GetComponent<Rigidbody>();
-
+        aSource = GetComponent<AudioSource>();
         m_Jumping = false;
 
         controller = GetComponent<CharacterController>();
@@ -33,15 +36,10 @@ public class Floid : MonoBehaviour
         avoid = Vector3.zero;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void Explode()
     {
-        Detection playerDetector = collision.gameObject.GetComponent<Detection>();
-        if (playerDetector != null)
-        {
-            // We hit the player!
-            playerDetector.hp.Damage(1);
-            mama.DestroyFloid(gameObject);
-        }
+        Instantiate(explosion, transform.position, Quaternion.identity);
+        mama.DestroyFloid(gameObject);
     }
 
     // Update is called once per frame
@@ -65,6 +63,7 @@ public class Floid : MonoBehaviour
         {
             direction.y = jumpSpeed;
             m_Jumping = true;
+            aSource.Play();
         } else
         {
             direction += Physics.gravity * 3 * Time.fixedDeltaTime;
@@ -75,6 +74,8 @@ public class Floid : MonoBehaviour
             intention = (playerBody.position - transform.position);
             if (intention.magnitude < 20)
             {
+                if (intention.magnitude < 2)
+                    Explode();
                 intention.Normalize();
             }
             else

@@ -12,7 +12,7 @@ public class FloidSpawner : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         floids = new ArrayList();
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 3; i++)
         {
             Vector2 vic = Random.insideUnitCircle * 10;
             floids.Add(Instantiate(floid, transform.position + new Vector3(vic.x, 2, vic.y), Quaternion.identity));

@@ -8,7 +8,10 @@ public class Health : MonoBehaviour {
     public GameObject Heart2;
     public GameObject Heart3;
 
+    private AudioSource aSource;
+
     private UnityEngine.UI.Image[] hearts;
+    Animator anim;
 
     public Sprite full;
     public Sprite empty;
@@ -17,6 +20,9 @@ public class Health : MonoBehaviour {
 	void Start () {
         health = 3;
 
+        aSource = GetComponent<AudioSource>();
+
+        anim = GetComponent<Animator>();
         hearts = new UnityEngine.UI.Image[3];
         hearts[0] = Heart1.GetComponent<UnityEngine.UI.Image>();
         hearts[1] = Heart2.GetComponent<UnityEngine.UI.Image>();
@@ -30,8 +36,15 @@ public class Health : MonoBehaviour {
 
     public void Damage(int dmg)
     {
+        aSource.Play();
         health -= dmg;
-        hearts[health].sprite = empty;
+        if (health == 0)
+        {
+            anim.SetTrigger("GameOver");
+            hearts[health].sprite = empty;
+        }
+        else if (health > 0)
+            hearts[health].sprite = empty;
     }
 
     public void Heal(int hea)

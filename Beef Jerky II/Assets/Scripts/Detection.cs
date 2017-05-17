@@ -5,9 +5,11 @@ using UnityEngine;
 public class Detection : MonoBehaviour {
     private RaycastHit hit;
     public LayerMask detectionLayer;
+    public LayerMask shootStuff;
     private float range = 5;
     private Transform myTransform;
-    public Health hp;
+
+    public GameObject shot;
 
     public MapGenerator generator;
 	// Use this for initialization
@@ -31,6 +33,22 @@ public class Detection : MonoBehaviour {
                 if (!generator.HasCreated(next))
                     generator.CreateRoom(next, generator.currentLevel);
                 hit.transform.gameObject.GetComponent<Door>().Toggle();
+            }
+        }
+        if (Input.GetButtonUp("Fire1"))
+        {
+            Instantiate(shot, myTransform.position + myTransform.forward, Quaternion.FromToRotation(Vector3.forward, myTransform.forward));
+            if (Physics.Raycast(myTransform.position, myTransform.forward, out hit, range * 10, shootStuff))
+            {
+                Floid enemy = hit.transform.gameObject.GetComponent<Floid>();
+                Rotator heart = hit.transform.gameObject.GetComponent<Rotator>();
+                if (enemy != null)
+                {
+                    enemy.Explode();
+                } else if (heart != null)
+                {
+                    heart.Heal();
+                }
             }
         }
     }
