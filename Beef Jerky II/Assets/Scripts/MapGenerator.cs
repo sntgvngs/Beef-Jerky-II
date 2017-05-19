@@ -35,49 +35,67 @@ public class MapGenerator : MonoBehaviour {
 
     public void CreateRoom(Vector3 loc, int level)
     {
-        float selector;
-        if (level == currentLevel)
-        {
-            selector = Random.value;
-            Instantiate(floor, new Vector3(loc.x * scalefactor, (loc.y + 1) * vscalefactor, loc.z * scalefactor), Quaternion.identity, transform);
-        }
-        else
-        {
-            selector = 2f;
-        }
-        if(selector < exitChance && !exitCreated)
+        Debug.Log("Creating for " + level + " while at " + currentLevel);
+        if (Random.value < exitChance && !exitCreated)
         {
             // Create exit floor
             Instantiate(exit, new Vector3(loc.x * scalefactor, -level * vscalefactor, loc.z * scalefactor), Quaternion.identity, transform);
             exitCreated = true;
             CheckNextLevel();
             CreateRoom(loc + Vector3.down, level + 1);
-        } else if(selector < 0.5f)
+        }
+        else if (level == currentLevel)
         {
-            // Create healing floor
-            Instantiate(healingFloor, new Vector3(loc.x * scalefactor, -level * vscalefactor, loc.z * scalefactor), Quaternion.identity, transform);
-        } else if(selector < 0.8f)
+            // Create roof
+            Instantiate(floor, new Vector3(loc.x * scalefactor, (loc.y + 1) * vscalefactor, loc.z * scalefactor), Quaternion.identity, transform);
+            Debug.Log(Random.value);
+            // We want some variety in the floor
+            if (Random.value < (float)level / (level + 2))
+            {
+                // Create enemy floor
+                Debug.Log("Making enemies");
+                Instantiate(enemyFloor, new Vector3(loc.x * scalefactor, -level * vscalefactor, loc.z * scalefactor), Quaternion.identity, transform);
+            }
+            else if (Random.value < (float)level / (level + 2))
+            {
+                // Create healing floor
+                Instantiate(healingFloor, new Vector3(loc.x * scalefactor, -level * vscalefactor, loc.z * scalefactor), Quaternion.identity, transform);
+            }
+            else
+            {
+                // Create vanilla floor
+                if(exitCreated)
+                    Instantiate(floor, new Vector3(loc.x * scalefactor, -level * vscalefactor, loc.z * scalefactor), Quaternion.identity, transform);
+                else
+                {
+                    // Create exit floor
+                    Instantiate(exit, new Vector3(loc.x * scalefactor, -level * vscalefactor, loc.z * scalefactor), Quaternion.identity, transform);
+                    exitCreated = true;
+                    CheckNextLevel();
+                    CreateRoom(loc + Vector3.down, level + 1);
+                }
+            }
+        }
+        else
         {
-            // Create enemy floor
-            Instantiate(enemyFloor, new Vector3(loc.x * scalefactor, -level * vscalefactor, loc.z * scalefactor), Quaternion.identity, transform);
-        } else
-        {
-            // Create vanilla floor
+            // This is a new level and we want a plain floor.
             Instantiate(floor, new Vector3(loc.x * scalefactor, -level * vscalefactor, loc.z * scalefactor), Quaternion.identity, transform);
         }
-        
+
+
         int j = Random.Range(0, 4);
         for (int i = 0; i < neighbors.Length; i++)
         {
-            if(!HasCreated(loc + neighbors[i]))
+            if (!HasCreated(loc + neighbors[i]))
             {
-                if((i == j && !exitCreated)  || Random.value > 0.5f)
+                if ((i == j && !exitCreated) || Random.value > 0.5f)
                 {
                     if (i > 1)
                         Instantiate(door, new Vector3(loc.x * scalefactor + neighbors[i].x * scalefactor / 2, -level * vscalefactor, loc.z * scalefactor + neighbors[i].z * scalefactor / 2), Quaternion.FromToRotation(Vector3.forward, neighbors[i]), transform);
                     else
                         Instantiate(door, new Vector3(loc.x * scalefactor + neighbors[i].x * scalefactor / 2, -level * vscalefactor, loc.z * scalefactor + neighbors[i].z * scalefactor / 2), Quaternion.identity, transform);
-                } else
+                }
+                else
                 {
                     if (i > 1)
                         Instantiate(wall, new Vector3(loc.x * scalefactor + neighbors[i].x * scalefactor / 2, -level * vscalefactor, loc.z * scalefactor + neighbors[i].z * scalefactor / 2), Quaternion.FromToRotation(Vector3.forward, neighbors[i]), transform);
@@ -87,7 +105,7 @@ public class MapGenerator : MonoBehaviour {
             }
         }
         createdRooms.Add(loc);
-        
+
     }
 
     public bool HasCreated(Vector3 loc)

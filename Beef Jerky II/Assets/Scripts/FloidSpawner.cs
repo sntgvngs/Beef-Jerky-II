@@ -9,22 +9,27 @@ public class FloidSpawner : MonoBehaviour {
     public float awareRadius;
     public float dangerRadius;
 
-	// Use this for initialization
-	void Start () {
+    static MapGenerator mapGen;
+
+    // Use this for initialization
+    void Start()
+    {
+        if (mapGen == null)
+            mapGen = GameObject.Find("Map").GetComponent<MapGenerator>();
         floids = new ArrayList();
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < mapGen.currentLevel * 2; i++)
         {
             Vector2 vic = Random.insideUnitCircle * 10;
             floids.Add(Instantiate(floid, transform.position + new Vector3(vic.x, 2, vic.y), Quaternion.identity));
         }
-        foreach(GameObject g in floids)
+        foreach (GameObject g in floids)
         {
             g.GetComponent<Floid>().mama = this;
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update () {
         for (var i = 0; i < floids.Count; i++)
         {
 
